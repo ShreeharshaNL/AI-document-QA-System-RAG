@@ -1,4 +1,4 @@
-// Frontend logic for AI Document Q&A (RAG)
+// Frontend logic for Aura RAG
 let documents = [];
 
 async function fetchDocuments() {
@@ -17,17 +17,17 @@ async function fetchDocuments() {
 function renderDocuments() {
     const container = document.getElementById('documentsList');
     if (!documents.length) {
-        container.innerHTML = `<div class="text-center py-4 text-slate-500 text-xs">No documents indexed yet.</div>`;
+        container.innerHTML = `<div class="text-center py-4 text-zinc-600 font-mono text-xs">No indexed documents found.</div>`;
         return;
     }
 
     container.innerHTML = documents.map(d => `
-        <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 flex items-center justify-between text-xs">
+        <div class="p-3 bg-zinc-950/80 rounded border border-zinc-800/80 flex items-center justify-between text-xs font-mono">
             <div class="space-y-0.5 truncate pr-2">
-                <div class="font-bold text-white truncate">${d.title}</div>
-                <div class="text-[11px] text-slate-500 font-mono">${d.filename} &bull; ${(d.file_size / 1024).toFixed(1)} KB</div>
+                <div class="font-medium text-white truncate font-sans">${d.title}</div>
+                <div class="text-[10px] text-zinc-500">${d.filename} &bull; ${(d.file_size / 1024).toFixed(1)} KB</div>
             </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
+            <span class="px-2 py-0.5 rounded text-[10px] bg-zinc-900 text-zinc-400 border border-zinc-800 shrink-0">
                 ${d.chunk_count} chunks
             </span>
         </div>
@@ -42,12 +42,12 @@ async function fetchChunks() {
             const container = document.getElementById('chunksContainer');
             document.getElementById('chunkCountBadge').innerText = `${data.chunks.length} Chunks`;
             container.innerHTML = data.chunks.map(c => `
-                <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800/80 text-[11px] space-y-1">
-                    <div class="flex items-center justify-between text-slate-500 font-semibold">
-                        <span class="text-teal-400 font-mono">${c.id} (Page ${c.page_number})</span>
-                        <span class="text-[10px] text-slate-500">384-dim</span>
+                <div class="p-2 bg-zinc-950 rounded border border-zinc-800/80 text-[11px] space-y-1">
+                    <div class="flex items-center justify-between text-zinc-500 font-mono text-[10px]">
+                        <span class="text-zinc-400">${c.id} (Page ${c.page_number})</span>
+                        <span>${c.token_count || 60} tokens</span>
                     </div>
-                    <p class="text-slate-300 font-sans line-clamp-2">${c.content}</p>
+                    <p class="text-zinc-300 font-sans line-clamp-2 leading-relaxed">${c.content}</p>
                 </div>
             `).join('');
         }
@@ -72,15 +72,16 @@ document.getElementById('qaForm').addEventListener('submit', async (e) => {
     const container = document.getElementById('qaResultContainer');
 
     btn.disabled = true;
-    badge.innerText = "Vector Search & Synthesizing...";
-    badge.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 animate-pulse";
+    badge.innerText = "QUERYING";
+    badge.className = "text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-700 text-white animate-pulse";
 
     container.innerHTML = `
-        <div class="p-4 bg-slate-950 rounded-xl border border-slate-800/80 space-y-3">
-            <div class="flex items-center space-x-2 text-xs text-slate-400">
-                <span class="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span>Generating query embeddings and querying pgvector similarity index...</span>
+        <div class="p-4 bg-zinc-950 rounded-lg border border-zinc-800/80 space-y-2 font-mono text-xs text-zinc-400">
+            <div class="flex items-center space-x-2">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>Calculating query embedding vector via @cf/baai/bge-small-en-v1.5...</span>
             </div>
+            <div class="text-zinc-500 text-[11px]">&rarr; Ranking top-3 chunks using cosine distance (&lt;=&gt;)</div>
         </div>
     `;
 
@@ -93,60 +94,59 @@ document.getElementById('qaForm').addEventListener('submit', async (e) => {
         const data = await res.json();
 
         if (data.success) {
-            badge.innerText = `Matched (${(data.citations[0]?.similarityScore * 100).toFixed(1)}% Sim)`;
-            badge.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400";
+            badge.innerText = `MATCHED (${(data.citations[0]?.similarityScore * 100).toFixed(1)}%)`;
+            badge.className = "text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
 
             container.innerHTML = `
                 <!-- Question -->
-                <div class="p-3 bg-slate-800/40 rounded-xl border border-slate-700/60 text-xs">
-                    <div class="font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1">User Question</div>
-                    <div class="text-white font-medium">${data.question}</div>
+                <div class="p-3 bg-zinc-950/80 rounded-lg border border-zinc-800/80 text-xs font-mono">
+                    <div class="text-[10px] text-zinc-500 uppercase tracking-wider mb-1">Inquiry</div>
+                    <div class="text-white font-sans text-xs font-medium">${data.question}</div>
                 </div>
 
-                <!-- Grounded Answer -->
-                <div class="p-4 bg-slate-950 rounded-xl border border-emerald-500/30 text-xs space-y-2">
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-emerald-400 text-xs flex items-center">
-                            <i class="fa-solid fa-sparkles mr-1.5 text-emerald-400"></i>
-                            Grounded Answer (Llama 3.1)
+                <!-- Answer -->
+                <div class="p-4 bg-zinc-950 rounded-lg border border-zinc-800 text-xs space-y-2">
+                    <div class="flex items-center justify-between font-mono text-[10px] text-zinc-500 border-b border-zinc-900 pb-2">
+                        <span class="text-emerald-400 font-semibold flex items-center">
+                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 mr-2"></span>
+                            Grounded Synthesis (Llama 3.2 3B)
                         </span>
-                        <span class="text-[10px] text-slate-500 font-mono">Source-Cited</span>
+                        <span>Latency: ${data.latencyMs}ms</span>
                     </div>
-                    <p class="text-slate-200 leading-relaxed text-sm">${data.answer}</p>
+                    <p class="text-zinc-200 leading-relaxed font-sans text-xs sm:text-sm">${data.answer}</p>
                 </div>
 
-                <!-- Citations List -->
+                <!-- Citations -->
                 <div class="space-y-2 pt-2">
-                    <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between">
-                        <span>Retrieved Context Excerpts (pgvector)</span>
-                        <span class="font-mono text-[10px] text-slate-500">Top-${data.citations.length} Ranked</span>
+                    <div class="text-[10px] font-mono uppercase tracking-wider text-zinc-500 flex items-center justify-between">
+                        <span>Retrieved Context Citations</span>
+                        <span>Top-${data.citations.length} Ranked</span>
                     </div>
                     ${data.citations.map(c => `
-                        <div class="p-3 bg-slate-950/70 rounded-xl border border-slate-800/80 text-xs space-y-1">
-                            <div class="flex items-center justify-between font-mono text-[11px]">
-                                <span class="text-teal-400 font-semibold">Chunk ${c.chunkIndex} (Page ${c.pageNumber})</span>
-                                <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 font-bold">
-                                    ${(c.similarityScore * 100).toFixed(1)}% Match
+                        <div class="p-3 bg-zinc-950/80 rounded-lg border border-zinc-800/80 text-xs space-y-1 font-mono">
+                            <div class="flex items-center justify-between text-[10px]">
+                                <span class="text-zinc-300 font-medium">${c.documentTitle || c.documentId} &bull; Page ${c.pageNumber}</span>
+                                <span class="px-1.5 py-0.5 rounded bg-zinc-900 text-emerald-400 border border-zinc-800 font-semibold">
+                                    ${(c.similarityScore * 100).toFixed(1)}% Sim
                                 </span>
                             </div>
-                            <p class="text-slate-300 text-[11px] italic">&ldquo;${c.content}&rdquo;</p>
+                            <p class="text-zinc-400 text-[11px] font-sans leading-relaxed pt-1 border-t border-zinc-900/60">&ldquo;${c.content}&rdquo;</p>
                         </div>
                     `).join('')}
                 </div>
             `;
         } else {
-            badge.innerText = "Error";
-            badge.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-400";
-            container.innerHTML = `<div class="p-4 bg-red-950/30 border border-red-500/30 text-red-400 text-xs rounded-xl">${data.answer || data.error}</div>`;
+            badge.innerText = "ERROR";
+            badge.className = "text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20";
+            container.innerHTML = `<div class="p-4 bg-zinc-950 border border-red-500/30 text-red-400 text-xs rounded font-mono">${data.answer || data.error}</div>`;
         }
     } catch (err) {
-        container.innerHTML = `<div class="p-4 bg-red-950/30 border border-red-500/30 text-red-400 text-xs rounded-xl">Error: ${err.message}</div>`;
+        container.innerHTML = `<div class="p-4 bg-zinc-950 border border-red-500/30 text-red-400 text-xs rounded font-mono">Error: ${err.message}</div>`;
     } finally {
         btn.disabled = false;
     }
 });
 
-// Modal handling
 const uploadModal = document.getElementById('uploadModal');
 document.getElementById('openUploadModalBtn').addEventListener('click', () => uploadModal.classList.remove('hidden'));
 document.getElementById('closeUploadModalBtn').addEventListener('click', () => uploadModal.classList.add('hidden'));
@@ -168,12 +168,11 @@ document.getElementById('uploadDocForm').addEventListener('submit', async (e) =>
         document.getElementById('uploadDocForm').reset();
         await fetchDocuments();
         await fetchChunks();
-        alert("Document successfully ingested and embedded!");
+        alert("Document ingested, chunked, and embedded into vector store.");
     } catch (err) {
         alert("Upload error: " + err.message);
     }
 });
 
-// Initial Load
 fetchDocuments();
 fetchChunks();

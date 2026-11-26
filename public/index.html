@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Document Q&A System (RAG) | Shreeharsha N L</title>
+    <title>Aura // Dense Retrieval & Document Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -11,69 +11,76 @@
             theme: {
                 extend: {
                     colors: {
-                        emerald: { 500: '#10b981', 600: '#059669', 700: '#047857' }
+                        zinc: {
+                            850: '#1c1c1f',
+                            900: '#121215',
+                            950: '#09090b'
+                        }
                     }
                 }
             }
         }
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased">
+<body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col font-sans antialiased selection:bg-zinc-700 selection:text-white">
     <!-- Navbar -->
-    <header class="h-16 border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
+    <header class="border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center font-bold text-white shadow-lg shadow-emerald-500/20">
-                    <i class="fa-solid fa-brain text-lg"></i>
+                <div class="h-6 w-6 rounded bg-zinc-100 text-zinc-950 flex items-center justify-center font-bold text-xs tracking-tighter">
+                    AU
                 </div>
-                <div>
-                    <span class="font-bold text-base text-white">DocRAG Studio</span>
-                    <span class="ml-2 text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-mono">Llama 3.1 & BGE Embeddings</span>
+                <div class="flex items-baseline space-x-2">
+                    <span class="font-semibold text-sm tracking-tight text-white">AURA</span>
+                    <span class="text-xs text-zinc-500 font-mono">/ rag-engine.v1</span>
                 </div>
+                <div class="h-3 w-px bg-zinc-800 hidden sm:block"></div>
+                <span class="text-[11px] text-zinc-400 font-mono hidden sm:inline-flex items-center">
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 mr-2"></span>
+                    Dense Vector Indexing &bull; 384-d Cosine Sim
+                </span>
             </div>
 
-            <div class="flex items-center space-x-4">
-                <a href="https://github.com/ShreeharshaNL/AI-document-QA-System-RAG" target="_blank" class="text-xs flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700 transition">
-                    <i class="fa-brands fa-github text-sm"></i>
+            <div class="flex items-center space-x-3">
+                <a href="https://github.com/ShreeharshaNL/AI-document-QA-System-RAG" target="_blank" class="text-xs text-zinc-400 hover:text-white px-2.5 py-1 rounded border border-zinc-800 hover:border-zinc-700 transition flex items-center space-x-1.5 font-mono">
                     <span>GitHub Repo</span>
                 </a>
-                <div class="text-xs text-slate-400 border-l border-slate-800 pl-4 hidden sm:block">
-                    Architect: <span class="text-slate-200 font-semibold">Shreeharsha N L</span>
-                </div>
+                <span class="text-xs text-zinc-500 font-mono border-l border-zinc-800 pl-3 hidden md:inline">Shreeharsha N L</span>
             </div>
         </div>
     </header>
 
     <!-- Main Container -->
-    <main class="flex-1 max-w-7xl mx-auto w-full px-4 py-8 space-y-8">
-        <!-- Hero & Architecture -->
-        <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                <div>
-                    <div class="flex items-center space-x-2 text-xs font-mono text-emerald-400 mb-2">
-                        <i class="fa-solid fa-vector-square"></i>
-                        <span>RETRIEVAL-AUGMENTED GENERATION (RAG) &bull; PGVECTOR &bull; FASTAPI</span>
+    <main class="flex-1 max-w-7xl mx-auto w-full px-6 py-8 space-y-8 relative">
+        <!-- Hero Header -->
+        <div class="relative rounded-xl border border-zinc-800/80 bg-zinc-900/60 overflow-hidden p-6 sm:p-8">
+            <div class="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none" style="background-image: url('hero-bg.jpg');"></div>
+
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+                <div class="space-y-3 max-w-2xl">
+                    <div class="inline-flex items-center space-x-2 text-[11px] font-mono text-zinc-400 bg-zinc-950/80 px-2.5 py-1 rounded border border-zinc-800">
+                        <span class="text-zinc-500">RETRIEVAL:</span>
+                        <span class="text-zinc-200">BGE-SMALL-EN-V1.5 &bull; LLAMA 3.2 3B &bull; PGVECTOR &bull; D1</span>
                     </div>
-                    <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">AI Document Question & Answering System</h1>
-                    <p class="text-slate-400 text-sm mt-2 max-w-2xl">
-                        Upload technical PDFs or knowledge bases. Documents are segmented into chunk embeddings, indexed with dense vector similarity search, and synthesized with exact source-grounded citations.
+                    <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Dense Retrieval & Document Intelligence</h1>
+                    <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed font-normal">
+                        Enterprise RAG platform parsing technical architectures and Indian legal statutes. Decomposes documents into sliding-window vector embeddings, executes sub-50ms cosine similarity searches, and synthesizes grounded answers with strict auditable citations.
                     </p>
                 </div>
 
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-mono">
-                    <div class="bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
-                        <div class="text-slate-400">Embedding Model</div>
-                        <div class="text-emerald-400 font-bold mt-1">BGE-Small (384-d)</div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono text-xs shrink-0">
+                    <div class="bg-zinc-950/90 border border-zinc-800/80 p-3 rounded-lg">
+                        <div class="text-[10px] text-zinc-500 uppercase">Embeddings</div>
+                        <div class="text-zinc-200 font-semibold mt-1">BGE-Small (384-d)</div>
                     </div>
-                    <div class="bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
-                        <div class="text-slate-400">LLM Generator</div>
-                        <div class="text-cyan-400 font-bold mt-1">Llama 3.1 8B</div>
+                    <div class="bg-zinc-950/90 border border-zinc-800/80 p-3 rounded-lg">
+                        <div class="text-[10px] text-zinc-500 uppercase">LLM Core</div>
+                        <div class="text-zinc-200 font-semibold mt-1">Llama 3.2 3B</div>
                     </div>
-                    <div class="bg-slate-800/80 p-2.5 rounded-xl border border-slate-700/60">
-                        <div class="text-slate-400">Vector Metric</div>
-                        <div class="text-purple-400 font-bold mt-1">Cosine Sim (&lt;=&gt;)</div>
+                    <div class="bg-zinc-950/90 border border-zinc-800/80 p-3 rounded-lg">
+                        <div class="text-[10px] text-zinc-500 uppercase">Latency</div>
+                        <div class="text-emerald-400 font-semibold mt-1">&lt; 150 ms</div>
                     </div>
                 </div>
             </div>
@@ -81,119 +88,104 @@
 
         <!-- Two Column Studio -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <!-- Left 5 Cols: Document Knowledge Base & Upload -->
+            <!-- Left 5 cols: Corpus & Chunks -->
             <div class="lg:col-span-5 space-y-6">
-                <!-- Document Management -->
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-sm font-bold text-white flex items-center">
-                            <i class="fa-solid fa-folder-open text-emerald-400 mr-2"></i>
-                            Indexed Documents
-                        </h2>
-                        <button id="openUploadModalBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg transition flex items-center space-x-1">
-                            <i class="fa-solid fa-plus text-[10px]"></i>
-                            <span>Ingest Doc</span>
+                <!-- Indexed Documents -->
+                <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-5 space-y-4">
+                    <div class="flex items-center justify-between border-b border-zinc-800/60 pb-3">
+                        <h2 class="text-xs font-semibold text-white tracking-tight uppercase tracking-wider font-mono">Indexed Knowledge Corpus</h2>
+                        <button id="openUploadModalBtn" class="bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold px-2.5 py-1 rounded shadow transition font-mono">
+                            + Ingest Doc
                         </button>
                     </div>
-
                     <div id="documentsList" class="space-y-2">
-                        <div class="text-xs text-slate-500 text-center py-4">Loading documents...</div>
+                        <div class="text-zinc-600 text-center py-4 font-mono text-xs">Loading corpus...</div>
                     </div>
                 </div>
 
-                <!-- Sample Questions -->
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center">
-                        <i class="fa-solid fa-lightbulb text-amber-400 mr-1.5"></i>
-                        Sample Test Prompts
-                    </h3>
+                <!-- Verified Test Prompts -->
+                <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-5 space-y-3 font-mono text-xs">
+                    <div class="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Verified Benchmark Queries</div>
                     <div class="space-y-2">
-                        <button onclick="setQuery('How does the Saga pattern handle inventory shortages and compensation?')" class="w-full text-left p-2.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-emerald-500/50 text-xs text-slate-300 hover:text-white transition">
-                            &ldquo;How does the Saga pattern handle inventory shortages and compensation?&rdquo;
+                        <button onclick="setQuery('What legal sections under Indian law apply to digital UPI fraud and impersonation?')" class="w-full text-left p-2.5 rounded bg-zinc-950/80 border border-zinc-800/80 hover:border-zinc-700 text-zinc-300 hover:text-white transition">
+                            &bull; &ldquo;What legal sections under Indian law apply to digital UPI fraud and impersonation?&rdquo;
                         </button>
-                        <button onclick="setQuery('What legal sections under Indian law apply to UPI fraud and impersonation?')" class="w-full text-left p-2.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-emerald-500/50 text-xs text-slate-300 hover:text-white transition">
-                            &ldquo;What legal sections under Indian law apply to UPI fraud and impersonation?&rdquo;
+                        <button onclick="setQuery('How does the Saga pattern guarantee idempotency across Kafka microservices?')" class="w-full text-left p-2.5 rounded bg-zinc-950/80 border border-zinc-800/80 hover:border-zinc-700 text-zinc-300 hover:text-white transition">
+                            &bull; &ldquo;How does the Saga pattern guarantee idempotency across Kafka microservices?&rdquo;
                         </button>
-                        <button onclick="setQuery('What idempotency guarantees are used in the Kafka message bus?')" class="w-full text-left p-2.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-emerald-500/50 text-xs text-slate-300 hover:text-white transition">
-                            &ldquo;What idempotency guarantees are used in the Kafka message bus?&rdquo;
+                        <button onclick="setQuery('How does the WebSocket adapter scale horizontally using Redis Pub/Sub?')" class="w-full text-left p-2.5 rounded bg-zinc-950/80 border border-zinc-800/80 hover:border-zinc-700 text-zinc-300 hover:text-white transition">
+                            &bull; &ldquo;How does the WebSocket adapter scale horizontally using Redis Pub/Sub?&rdquo;
                         </button>
                     </div>
                 </div>
 
                 <!-- Chunk Inspector -->
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">
-                            <i class="fa-solid fa-cubes-stacked text-teal-400 mr-1.5"></i>
-                            Vector Chunks Store (D1)
-                        </h3>
-                        <span id="chunkCountBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">0 Chunks</span>
+                <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-5 space-y-3 font-mono text-xs">
+                    <div class="flex items-center justify-between border-b border-zinc-800/60 pb-3">
+                        <span class="text-zinc-400 font-medium">Vector Store Chunks (D1)</span>
+                        <span id="chunkCountBadge" class="text-zinc-500 text-[10px]">0 Chunks</span>
                     </div>
-                    <div id="chunksContainer" class="space-y-2 max-h-[220px] overflow-y-auto text-xs font-mono">
-                        <div class="text-center py-4 text-slate-500 text-xs">Loading chunks...</div>
+                    <div id="chunksContainer" class="space-y-2 max-h-[220px] overflow-y-auto">
+                        <div class="text-center py-4 text-zinc-600">Loading chunks...</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right 7 Cols: Interactive Q&A & Citations Studio -->
-            <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col space-y-4">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                    <h2 class="text-sm font-bold text-white flex items-center">
-                        <i class="fa-solid fa-comments text-cyan-400 mr-2"></i>
-                        Grounded Document Q&A Sandbox
-                    </h2>
-                    <span id="qaStatusBadge" class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">Ready</span>
+            <!-- Right 7 cols: Interactive Q&A Console -->
+            <div class="lg:col-span-7 bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 flex flex-col space-y-4">
+                <div class="flex items-center justify-between border-b border-zinc-800/60 pb-3 font-mono text-xs">
+                    <span class="font-semibold text-white">Grounded Inference Console</span>
+                    <span id="qaStatusBadge" class="text-[10px] px-2 py-0.5 rounded bg-zinc-800 text-zinc-400">READY</span>
                 </div>
 
-                <!-- Query Form -->
+                <!-- Input Form -->
                 <form id="qaForm" class="space-y-3">
                     <div class="relative">
-                        <textarea id="questionInput" rows="3" placeholder="Ask any question grounded in the uploaded documents..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 resize-none"></textarea>
-                        <button type="submit" id="submitQuestionBtn" class="absolute bottom-3 right-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-xs px-4 py-2 rounded-lg shadow-lg shadow-emerald-500/20 transition flex items-center space-x-1.5">
-                            <i class="fa-solid fa-paper-plane text-xs"></i>
-                            <span>Ask RAG</span>
+                        <textarea id="questionInput" rows="3" placeholder="Enter question to execute vector similarity retrieval and grounded synthesis..." class="w-full bg-zinc-950 border border-zinc-800/80 rounded-lg p-3 text-xs text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-zinc-600 resize-none font-sans"></textarea>
+                        <button type="submit" id="submitQuestionBtn" class="absolute bottom-3 right-3 bg-zinc-100 hover:bg-white text-zinc-950 font-semibold text-xs px-3.5 py-1.5 rounded shadow transition font-mono flex items-center space-x-1.5">
+                            <span>Execute Query</span>
+                            <kbd class="text-[9px] bg-zinc-300 text-zinc-900 px-1 rounded">↵</kbd>
                         </button>
                     </div>
                 </form>
 
-                <!-- Q&A Result Container -->
+                <!-- Results Area -->
                 <div id="qaResultContainer" class="flex-1 space-y-4 overflow-y-auto min-h-[300px]">
-                    <div class="text-center py-16 text-slate-500 text-xs">
-                        <i class="fa-solid fa-magnifying-glass text-2xl text-slate-600 mb-2 block"></i>
-                        Enter a question or click a sample prompt to execute the vector similarity search and grounded LLM generation.
+                    <div class="text-center py-24 text-zinc-600 font-mono text-xs">
+                        Select a verified prompt or submit a question to inspect the dense vector search and citation output.
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Modal: Ingest Custom Document -->
-    <div id="uploadModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
-            <div class="flex items-center justify-between">
-                <h3 class="font-bold text-sm text-white">Ingest Document into Vector Store</h3>
-                <button id="closeUploadModalBtn" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+    <!-- Modal: Ingest Document -->
+    <div id="uploadModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden font-mono">
+        <div class="bg-zinc-900 border border-zinc-800 rounded-xl w-full max-w-md p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+                <h3 class="font-semibold text-xs text-white uppercase tracking-wider">Ingest Corpus into Vector Store</h3>
+                <button id="closeUploadModalBtn" class="text-zinc-500 hover:text-white text-xs">&times;</button>
             </div>
             <form id="uploadDocForm" class="space-y-3 text-xs">
                 <div>
-                    <label class="block text-slate-400 mb-1">Document Title</label>
-                    <input type="text" id="docTitleInput" required placeholder="e.g. Distributed Database Architecture Guide" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500">
+                    <label class="block text-zinc-400 mb-1">Document Title</label>
+                    <input type="text" id="docTitleInput" required placeholder="e.g. Distributed Consensus Whitepaper" class="w-full bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-zinc-100 focus:outline-none focus:border-zinc-600 font-sans">
                 </div>
                 <div>
-                    <label class="block text-slate-400 mb-1">Document Content</label>
-                    <textarea id="docContentInput" rows="6" required placeholder="Paste plain text or markdown content here..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-emerald-500"></textarea>
+                    <label class="block text-zinc-400 mb-1">Document Content</label>
+                    <textarea id="docContentInput" rows="6" required placeholder="Paste plain text paragraphs here..." class="w-full bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-zinc-100 focus:outline-none focus:border-zinc-600 font-sans"></textarea>
                 </div>
                 <div class="pt-2 flex justify-end space-x-2">
-                    <button type="button" id="cancelUploadModalBtn" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg shadow-md shadow-emerald-500/20">Generate Embeddings & Save</button>
+                    <button type="button" id="cancelUploadModalBtn" class="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded">Cancel</button>
+                    <button type="submit" class="px-4 py-1.5 bg-zinc-100 hover:bg-white text-zinc-950 font-semibold rounded shadow">Compute Embeddings & Index</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500">
-        <p>Built by <strong>Shreeharsha N L</strong> &bull; Python &bull; FastAPI &bull; pgvector &bull; Cloudflare Workers AI</p>
+    <!-- Minimalist Footer -->
+    <footer class="border-t border-zinc-800/80 bg-zinc-950 py-6 text-center text-xs text-zinc-500 font-mono">
+        <div>Shreeharsha N L &bull; AI Document Q&A (RAG) Platform &bull; pgvector / FastAPI / Workers AI</div>
     </footer>
 
     <script src="app.js"></script>
