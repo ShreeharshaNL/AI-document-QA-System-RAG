@@ -1,7 +1,6 @@
-// Frontend interactive logic for Aura AI Document Q&A System (RAG)
+// Veltro Document Intelligence Controller
 let documents = [];
 
-// Fetch Documents
 async function fetchDocuments() {
     try {
         const res = await fetch('/api/documents');
@@ -18,24 +17,23 @@ async function fetchDocuments() {
 function renderDocuments() {
     const container = document.getElementById('documentsList');
     if (!documents.length) {
-        container.innerHTML = `<div class="text-center py-6 text-slate-500 font-mono text-xs">No indexed documents found.</div>`;
+        container.innerHTML = `<div class="text-center py-6 text-[#64748b] font-mono text-xs">No indexed documents found.</div>`;
         return;
     }
 
     container.innerHTML = documents.map(d => `
-        <div class="p-3.5 bg-emerald-950/90 rounded-xl border border-emerald-500/20 hover:border-emerald-400/40 transition flex items-center justify-between text-xs font-mono shadow-sm">
+        <div class="p-3.5 bg-[#ffffff] rounded-lg border border-[#e2e8f0] hover:border-[#cbd5e1] transition flex items-center justify-between text-xs font-mono shadow-sm">
             <div class="space-y-0.5 truncate pr-2">
-                <div class="font-bold text-white truncate font-sans">${d.title}</div>
-                <div class="text-[10px] text-slate-400">${d.classification || 'SPEC'} &bull; ${(d.file_size / 1024).toFixed(1)} KB</div>
+                <div class="font-bold text-[#0f172a] truncate font-sans text-sm">${d.title}</div>
+                <div class="text-[11px] text-[#64748b]">${d.classification || 'SPEC'} &bull; ${(d.file_size / 1024).toFixed(1)} KB</div>
             </div>
-            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-900 text-emerald-300 border border-emerald-500/30 shrink-0">
+            <span class="badge-veltro shrink-0">
                 ${d.chunk_count} chunks
             </span>
         </div>
     `).join('');
 }
 
-// Fetch Chunks
 async function fetchChunks() {
     try {
         const res = await fetch('/api/chunks');
@@ -44,12 +42,12 @@ async function fetchChunks() {
             const container = document.getElementById('chunksContainer');
             document.getElementById('chunkCountBadge').innerText = `${data.chunks.length} Chunks Indexed`;
             container.innerHTML = data.chunks.map(c => `
-                <div class="p-3 bg-emerald-950 rounded-xl border border-emerald-500/20 text-[11px] space-y-1.5 hover:border-emerald-400/30 transition">
-                    <div class="flex items-center justify-between text-slate-400 font-mono text-[10px]">
-                        <span class="text-emerald-400 font-bold">${c.id} (Page ${c.page_number})</span>
-                        <span class="px-1.5 py-0.5 rounded bg-emerald-900/60 text-slate-300">${c.token_count || 60} tokens</span>
+                <div class="p-3 bg-[#ffffff] rounded-lg border border-[#e2e8f0] text-[11px] space-y-1.5 shadow-sm">
+                    <div class="flex items-center justify-between text-[#64748b] font-mono text-[10px]">
+                        <span class="text-[#2563eb] font-bold">${c.id} (Page ${c.page_number})</span>
+                        <span class="px-1.5 py-0.5 rounded bg-[#f1f5f9] text-[#334155]">${c.token_count || 60} tokens</span>
                     </div>
-                    <p class="text-slate-300 font-sans line-clamp-2 leading-relaxed">${c.content}</p>
+                    <p class="text-[#334155] font-sans line-clamp-2 leading-relaxed">${c.content}</p>
                 </div>
             `).join('');
         }
@@ -63,7 +61,6 @@ window.setQuery = function(text) {
     document.getElementById('submitQuestionBtn').click();
 };
 
-// QA Query Submission with Visual Cosine Bars & Streaming Typewriter
 document.getElementById('qaForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const input = document.getElementById('questionInput');
@@ -75,17 +72,17 @@ document.getElementById('qaForm').addEventListener('submit', async (e) => {
     const container = document.getElementById('qaResultContainer');
 
     btn.disabled = true;
-    badge.innerText = "VECTOR EMBEDDING & QUERYING";
-    badge.className = "text-[11px] font-mono px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold animate-pulse";
+    badge.innerText = "QUERYING VECTOR MESH";
+    badge.className = "badge-veltro bg-blue-100 text-blue-800 animate-pulse";
 
     container.innerHTML = `
-        <div class="p-5 bg-emerald-950 rounded-2xl border border-emerald-500/30 space-y-3 font-mono text-xs text-slate-300 shadow-[0_0_20px_rgba(0,245,160,0.15)]">
+        <div class="p-5 bg-[#ffffff] rounded-xl border border-[#e2e8f0] space-y-2.5 font-mono text-xs text-[#334155] shadow-sm">
             <div class="flex items-center space-x-2">
-                <span class="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span class="text-emerald-300 font-bold">1. Generating 384-dimensional dense vector via @cf/baai/bge-small-en-v1.5...</span>
+                <span class="h-2 w-2 rounded-full bg-[#2563eb] animate-ping"></span>
+                <span class="text-[#2563eb] font-bold">1. Generating dense vector via @cf/baai/bge-small-en-v1.5...</span>
             </div>
-            <div class="text-slate-400 text-[11px] pl-4">&rarr; 2. Computing cosine distance (&lt;=&gt;) over indexed document embeddings in Cloudflare D1...</div>
-            <div class="text-slate-400 text-[11px] pl-4">&rarr; 3. Prompting @cf/meta/llama-3.2-3b-instruct with top ranked citation context...</div>
+            <div class="text-[#64748b] text-[11px] pl-4">&rarr; 2. Ranking candidate chunks with cosine distance (&lt;=&gt;) in Cloudflare D1...</div>
+            <div class="text-[#64748b] text-[11px] pl-4">&rarr; 3. Prompting Llama 3.2 3B Instruct with contextual excerpts...</div>
         </div>
     `;
 
@@ -99,80 +96,77 @@ document.getElementById('qaForm').addEventListener('submit', async (e) => {
 
         if (data.success) {
             const topSim = data.citations[0]?.similarityScore ? (data.citations[0].similarityScore * 100).toFixed(1) : "95.0";
-            badge.innerText = `GROUNDED MATCH (${topSim}%)`;
-            badge.className = "text-[11px] font-mono px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold";
+            badge.innerText = `GROUNDED (${topSim}%)`;
+            badge.className = "badge-veltro badge-emerald";
 
-            // Visual Cosine Similarity Bar Generator (21st.dev style)
             const citationsHtml = data.citations.map((c, idx) => {
                 const score = (c.similarityScore * 100).toFixed(1);
                 return `
-                    <div class="p-3.5 bg-emerald-950 rounded-xl border border-emerald-500/20 text-xs space-y-2 font-mono hover:border-emerald-400/40 transition">
+                    <div class="p-3.5 bg-[#ffffff] rounded-lg border border-[#e2e8f0] text-xs space-y-2 font-mono shadow-sm">
                         <div class="flex items-center justify-between text-[11px]">
-                            <span class="text-white font-bold">[Citation ${idx + 1}] ${c.documentTitle || c.documentId} &bull; Page ${c.pageNumber}</span>
-                            <span class="px-2 py-0.5 rounded-full bg-emerald-900 text-emerald-300 font-bold border border-emerald-500/30">
+                            <span class="text-[#0f172a] font-bold">[Citation ${idx + 1}] ${c.documentTitle || c.documentId} &bull; Page ${c.pageNumber}</span>
+                            <span class="badge-veltro badge-emerald font-bold">
                                 ${score}% Match
                             </span>
                         </div>
 
-                        <!-- 21st.dev Visual Similarity Meter -->
-                        <div class="w-full bg-emerald-900/60 rounded-full h-1.5 overflow-hidden">
-                            <div class="bg-gradient-to-r from-emerald-500 to-teal-300 h-1.5 rounded-full" style="width: ${score}%"></div>
+                        <!-- Veltro Visual Similarity Meter -->
+                        <div class="w-full bg-[#f1f5f9] rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-gradient-to-r from-[#2563eb] to-[#059669] h-1.5 rounded-full" style="width: ${score}%"></div>
                         </div>
 
-                        <p class="text-slate-300 text-xs font-sans leading-relaxed pt-1 border-t border-emerald-500/15">&ldquo;${c.content}&rdquo;</p>
+                        <p class="text-[#334155] text-xs font-sans leading-relaxed pt-1 border-t border-[#f1f5f9]">&ldquo;${c.content}&rdquo;</p>
                     </div>
                 `;
             }).join('');
 
             container.innerHTML = `
-                <!-- Question Card -->
-                <div class="p-4 bg-emerald-950/80 rounded-xl border border-emerald-500/20 text-xs font-mono">
-                    <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Inquiry Formulation</div>
-                    <div class="text-white font-sans text-sm font-semibold">${data.question}</div>
+                <!-- Question -->
+                <div class="p-4 bg-[#f8fafc] rounded-xl border border-[#e2e8f0] text-xs font-mono">
+                    <div class="text-[10px] text-[#64748b] uppercase tracking-wider mb-1">Inquiry Formulation</div>
+                    <div class="text-[#0f172a] font-sans text-sm font-semibold">${data.question}</div>
                 </div>
 
-                <!-- LLM Synthesis with Grounding Score -->
-                <div class="p-5 bg-emerald-950 rounded-2xl border border-emerald-500/30 space-y-3 shadow-[0_0_25px_rgba(0,245,160,0.15)]">
-                    <div class="flex items-center justify-between font-mono text-[11px] text-slate-400 border-b border-emerald-500/20 pb-2.5">
-                        <span class="text-emerald-300 font-bold flex items-center">
-                            <span class="h-2 w-2 rounded-full bg-emerald-400 mr-2 shadow-[0_0_8px_#00f5a0]"></span>
+                <!-- LLM Synthesis -->
+                <div class="card-veltro p-5 space-y-3 shadow-sm border border-[#e2e8f0]">
+                    <div class="flex items-center justify-between font-mono text-[11px] text-[#64748b] border-b border-[#f1f5f9] pb-2.5">
+                        <span class="text-[#2563eb] font-bold flex items-center">
+                            <span class="h-2 w-2 rounded-full bg-[#2563eb] mr-2"></span>
                             Grounded Synthesis (Llama 3.2 3B Instruct)
                         </span>
-                        <span>Latency: <strong class="text-emerald-400">${data.latencyMs}ms</strong></span>
+                        <span>Latency: <strong class="text-[#059669]">${data.latencyMs}ms</strong></span>
                     </div>
-                    <div id="streamingAnswerText" class="text-slate-200 leading-relaxed font-sans text-sm"></div>
+                    <div id="streamingAnswerText" class="text-[#334155] leading-relaxed font-sans text-sm"></div>
                 </div>
 
                 <!-- Ranked Citations -->
                 <div class="space-y-2.5 pt-2">
-                    <div class="text-xs font-mono uppercase tracking-wider text-slate-300 font-bold flex items-center justify-between">
-                        <span>Retrieved Context Citations (Dense Cosine Similarity)</span>
-                        <span class="text-emerald-400">${data.citations.length} Ranked Chunks</span>
+                    <div class="text-xs font-mono uppercase tracking-wider text-[#0f172a] font-bold flex items-center justify-between">
+                        <span>Auditable Source Citations (Dense Cosine Similarity)</span>
+                        <span class="text-[#2563eb]">${data.citations.length} Ranked Chunks</span>
                     </div>
                     ${citationsHtml}
                 </div>
             `;
 
-            // Stream typewriter animation into #streamingAnswerText
             streamTypewriter(data.answer, document.getElementById('streamingAnswerText'));
 
         } else {
             badge.innerText = "QUERY ERROR";
-            badge.className = "text-[11px] font-mono px-2.5 py-1 rounded-md bg-red-500/20 text-red-300 border border-red-500/40 font-semibold";
-            container.innerHTML = `<div class="p-4 bg-emerald-950 border border-red-500/30 text-red-400 text-xs rounded-xl font-mono">${data.answer || data.error}</div>`;
+            badge.className = "badge-veltro bg-red-100 text-red-800";
+            container.innerHTML = `<div class="p-4 bg-white border border-red-300 text-red-700 text-xs rounded-xl font-mono">${data.answer || data.error}</div>`;
         }
     } catch (err) {
-        container.innerHTML = `<div class="p-4 bg-emerald-950 border border-red-500/30 text-red-400 text-xs rounded-xl font-mono">Error: ${err.message}</div>`;
+        container.innerHTML = `<div class="p-4 bg-white border border-red-300 text-red-700 text-xs rounded-xl font-mono">Error: ${err.message}</div>`;
     } finally {
         btn.disabled = false;
     }
 });
 
-// Typewriter streaming simulator
 function streamTypewriter(text, element) {
     element.innerHTML = '';
     let i = 0;
-    const speed = 15;
+    const speed = 12;
     function type() {
         if (i < text.length) {
             element.innerHTML += text.charAt(i);
@@ -199,7 +193,7 @@ document.getElementById('uploadForm').addEventListener('submit', async (e) => {
     if (!title || !content) return;
 
     submitBtn.disabled = true;
-    submitBtn.innerText = "Embedding Vectors...";
+    submitBtn.innerText = "Generating Embeddings...";
 
     try {
         const res = await fetch('/api/documents/upload', {
@@ -221,7 +215,6 @@ document.getElementById('uploadForm').addEventListener('submit', async (e) => {
     }
 });
 
-// Initialize on Load
 document.addEventListener('DOMContentLoaded', () => {
     fetchDocuments();
     fetchChunks();
