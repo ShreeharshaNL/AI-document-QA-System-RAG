@@ -1,0 +1,29 @@
+{
+  "name": "ai-document-qa-rag",
+  "main": "worker/index.js",
+  "compatibility_date": "2024-09-23",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "rag-system-db",
+      "database_id": "59af6f16-14ba-4516-a0c3-b7e827567c76"
+    }
+  ],
+  "ai": {
+    "binding": "AI"
+  },
+  "routes": [
+    {
+      "pattern": "rag.shreeharsha.online",
+      "custom_domain": true
+    }
+  ]
+}
