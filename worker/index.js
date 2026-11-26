@@ -166,17 +166,19 @@ export default {
                     let answer = "";
 
                     if (ai) {
-                        const prompt = `You are Aura, an enterprise technical intelligence assistant.
-Answer the user's question with technical rigor and factual precision using ONLY the retrieved context below. Cite the specific sections and documents in your explanation.
-
-Retrieved Context:
-${contextText}
-
-Question: ${question}
-Answer:`;
+                        const messages = [
+                            {
+                                role: "system",
+                                content: "You are Aura, an enterprise technical and legal AI intelligence system. Answer the question directly, authoritatively, and concisely using the provided context excerpts. Cite specific statutes, documents, or architecture sections directly. Do not include conversational filler, notes, or meta commentary."
+                            },
+                            {
+                                role: "user",
+                                content: `Retrieved Context:\n${contextText}\n\nQuestion: ${question}`
+                            }
+                        ];
 
                         try {
-                            const llmRes = await ai.run('@cf/meta/llama-3.2-3b-instruct', { prompt, max_tokens: 300 });
+                            const llmRes = await ai.run('@cf/meta/llama-3.2-3b-instruct', { messages, max_tokens: 280 });
                             answer = (llmRes.response || llmRes.choices?.[0]?.text || "").trim();
                         } catch (err) {
                             answer = `Based on verified excerpt from "${topChunks[0].documentTitle}": ${topChunks[0].content}`;

@@ -1,25 +1,94 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg-emerald: #03140e;
+    --surface-emerald: #082319;
+    --surface-elevated: #0f3628;
+    --mint-glow: #00f5a0;
+    --emerald-accent: #10b981;
+    --border-emerald: rgba(16, 185, 129, 0.22);
+}
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #09090b;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-emerald);
+    background-image: 
+        radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.18) 0%, transparent 55%),
+        radial-gradient(circle at 100% 30%, rgba(0, 245, 160, 0.08) 0%, transparent 40%),
+        linear-gradient(to right, rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
 }
 
 .font-mono {
     font-family: 'JetBrains Mono', monospace;
 }
 
+/* 21st.dev Spotlight Glow Card */
+.spotlight-card {
+    position: relative;
+    background: #082319;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 0.85rem;
+    overflow: hidden;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.spotlight-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(450px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 245, 160, 0.15), transparent 75%);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.spotlight-card:hover::before {
+    opacity: 1;
+}
+
+.spotlight-card:hover {
+    border-color: rgba(0, 245, 160, 0.5);
+    box-shadow: 0 10px 30px -10px rgba(0, 245, 160, 0.2);
+    transform: translateY(-2px);
+}
+
+/* 21st.dev Shine Border effect */
+.shine-border-emerald {
+    position: relative;
+    border: 1px solid transparent;
+    border-radius: 0.85rem;
+    background: linear-gradient(#082319, #082319) padding-box,
+                linear-gradient(135deg, rgba(0, 245, 160, 0.85), rgba(16, 185, 129, 0.25), rgba(0, 245, 160, 0.85)) border-box;
+    box-shadow: 0 0 25px -5px rgba(0, 245, 160, 0.25);
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+    width: 5px;
+    height: 5px;
 }
 ::-webkit-scrollbar-track {
-    background: transparent;
+    background: #03140e;
 }
 ::-webkit-scrollbar-thumb {
-    background: #27272a;
-    border-radius: 2px;
+    background: #0f3628;
+    border-radius: 3px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: #3f3f46;
+    background: #10b981;
+}
+
+/* Pulse beacon */
+@keyframes beacon {
+    0% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.6); opacity: 0; }
+    100% { transform: scale(1); opacity: 0; }
+}
+
+.pulse-beacon {
+    animation: beacon 2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }

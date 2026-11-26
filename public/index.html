@@ -11,10 +11,12 @@
             theme: {
                 extend: {
                     colors: {
-                        zinc: {
-                            850: '#1c1c1f',
-                            900: '#121215',
-                            950: '#09090b'
+                        emerald: {
+                            950: '#03140e',
+                            900: '#082319',
+                            850: '#0f3628',
+                            800: '#144634',
+                            mint: '#00f5a0'
                         }
                     }
                 }
@@ -23,169 +25,222 @@
     </script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col font-sans antialiased selection:bg-zinc-700 selection:text-white">
+<body class="text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-200">
     <!-- Navbar -->
-    <header class="border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="h-6 w-6 rounded bg-zinc-100 text-zinc-950 flex items-center justify-center font-bold text-xs tracking-tighter">
+    <header class="border-b border-emerald-500/20 bg-emerald-950/80 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3.5">
+                <div class="relative flex items-center justify-center h-9 w-9 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-600 text-emerald-950 font-black text-sm shadow-[0_0_15px_rgba(0,245,160,0.4)]">
                     AU
                 </div>
-                <div class="flex items-baseline space-x-2">
-                    <span class="font-semibold text-sm tracking-tight text-white">AURA</span>
-                    <span class="text-xs text-zinc-500 font-mono">/ rag-engine.v1</span>
+                <div class="flex flex-col">
+                    <div class="flex items-center space-x-2">
+                        <span class="font-bold text-sm tracking-tight text-white font-mono">AURA</span>
+                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 font-mono">BGE-SMALL 384-D</span>
+                    </div>
+                    <span class="text-[11px] text-emerald-300/60 font-mono hidden sm:inline">Dense Retrieval & LLM Synthesis</span>
                 </div>
-                <div class="h-3 w-px bg-zinc-800 hidden sm:block"></div>
-                <span class="text-[11px] text-zinc-400 font-mono hidden sm:inline-flex items-center">
-                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 mr-2"></span>
-                    Dense Vector Indexing &bull; 384-d Cosine Sim
-                </span>
+                <div class="h-4 w-px bg-emerald-500/20 hidden md:block"></div>
+                <div class="hidden md:flex items-center space-x-2 text-xs font-mono text-slate-300">
+                    <span class="relative flex h-2 w-2">
+                        <span class="pulse-beacon absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                    </span>
+                    <span class="text-slate-400">Vector Index &bull;</span>
+                    <span class="text-emerald-300 font-semibold">Cosine Distance (&lt;=&gt;)</span>
+                </div>
             </div>
 
             <div class="flex items-center space-x-3">
-                <a href="https://github.com/ShreeharshaNL/AI-document-QA-System-RAG" target="_blank" class="text-xs text-zinc-400 hover:text-white px-2.5 py-1 rounded border border-zinc-800 hover:border-zinc-700 transition flex items-center space-x-1.5 font-mono">
-                    <span>GitHub Repo</span>
+                <div class="hidden lg:flex items-center space-x-3 bg-emerald-900/90 border border-emerald-500/20 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-300">
+                    <span class="text-slate-400">LLM:</span>
+                    <span class="text-emerald-300 font-semibold">Llama 3.2 3B</span>
+                    <span class="text-slate-600">|</span>
+                    <span class="text-slate-400">Latency:</span>
+                    <span class="text-emerald-400 font-semibold">&lt; 150ms</span>
+                </div>
+
+                <a href="https://github.com/ShreeharshaNL/AI-document-QA-System-RAG" target="_blank" class="text-xs text-emerald-300 hover:text-white px-3 py-1.5 rounded-lg bg-emerald-900/80 hover:bg-emerald-850 border border-emerald-500/30 hover:border-emerald-400 transition flex items-center space-x-1.5 font-mono shadow-[0_0_10px_rgba(0,245,160,0.15)]">
+                    <span>GitHub</span>
                 </a>
-                <span class="text-xs text-zinc-500 font-mono border-l border-zinc-800 pl-3 hidden md:inline">Shreeharsha N L</span>
             </div>
         </div>
     </header>
 
     <!-- Main Container -->
-    <main class="flex-1 max-w-7xl mx-auto w-full px-6 py-8 space-y-8 relative">
-        <!-- Hero Header -->
-        <div class="relative rounded-xl border border-zinc-800/80 bg-zinc-900/60 overflow-hidden p-6 sm:p-8">
-            <div class="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none" style="background-image: url('hero-bg.jpg');"></div>
+    <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 space-y-8">
+        
+        <!-- Hero Section with Emerald Mesh Glow -->
+        <div class="relative rounded-2xl border border-emerald-500/25 bg-emerald-900/70 overflow-hidden p-6 sm:p-8 backdrop-blur-md shadow-[0_15px_40px_-15px_rgba(0,245,160,0.2)]">
+            <div class="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none mix-blend-screen" style="background-image: url('hero-bg.jpg');"></div>
 
             <div class="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-                <div class="space-y-3 max-w-2xl">
-                    <div class="inline-flex items-center space-x-2 text-[11px] font-mono text-zinc-400 bg-zinc-950/80 px-2.5 py-1 rounded border border-zinc-800">
-                        <span class="text-zinc-500">RETRIEVAL:</span>
-                        <span class="text-zinc-200">BGE-SMALL-EN-V1.5 &bull; LLAMA 3.2 3B &bull; PGVECTOR &bull; D1</span>
+                <div class="space-y-4 max-w-2xl">
+                    <div class="inline-flex items-center space-x-2 text-[11px] font-mono text-emerald-300 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/30 shadow-[0_0_12px_rgba(0,245,160,0.15)]">
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>RETRIEVAL PIPELINE: BGE-SMALL-EN-V1.5 &bull; COSINE DISTANCE &bull; CLOUDFLARE D1</span>
                     </div>
-                    <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Dense Retrieval & Document Intelligence</h1>
-                    <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed font-normal">
-                        Enterprise RAG platform parsing technical architectures and Indian legal statutes. Decomposes documents into sliding-window vector embeddings, executes sub-50ms cosine similarity searches, and synthesizes grounded answers with strict auditable citations.
+                    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
+                        Dense Retrieval & <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200">Legal Document</span> Intelligence
+                    </h1>
+                    <p class="text-sm text-slate-300 leading-relaxed font-normal">
+                        Enterprise semantic RAG platform parsing statutory legal frameworks and enterprise systems architectures. Employs 384-dimensional dense vector embeddings to index documents, computes sub-50ms cosine similarity rankings, and generates grounded synthesis answers with auditable citations.
                     </p>
                 </div>
 
+                <!-- Telemetry Bento Grid -->
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono text-xs shrink-0">
-                    <div class="bg-zinc-950/90 border border-zinc-800/80 p-3 rounded-lg">
-                        <div class="text-[10px] text-zinc-500 uppercase">Embeddings</div>
-                        <div class="text-zinc-200 font-semibold mt-1">BGE-Small (384-d)</div>
+                    <div class="bg-emerald-950/90 border border-emerald-500/25 p-3.5 rounded-xl shadow-[0_4px_15px_rgba(0,245,160,0.08)]">
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider">Embeddings</div>
+                        <div class="text-emerald-300 font-semibold mt-1">BGE-Small (384-d)</div>
                     </div>
-                    <div class="bg-zinc-950/90 border border-zinc-800/80 p-3 rounded-lg">
-                        <div class="text-[10px] text-zinc-500 uppercase">LLM Core</div>
-                        <div class="text-zinc-200 font-semibold mt-1">Llama 3.2 3B</div>
+                    <div class="bg-emerald-950/90 border border-emerald-500/25 p-3.5 rounded-xl shadow-[0_4px_15px_rgba(0,245,160,0.08)]">
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider">LLM Model</div>
+                        <div class="text-emerald-300 font-semibold mt-1">Llama 3.2 3B</div>
                     </div>
-                    <div class="bg-zinc-950/90 border border-zinc-800/80 p-3 rounded-lg">
-                        <div class="text-[10px] text-zinc-500 uppercase">Latency</div>
-                        <div class="text-emerald-400 font-semibold mt-1">&lt; 150 ms</div>
+                    <div class="bg-emerald-950/90 border border-emerald-500/25 p-3.5 rounded-xl shadow-[0_4px_15px_rgba(0,245,160,0.08)]">
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider">P95 Latency</div>
+                        <div class="text-emerald-400 font-semibold mt-1" id="liveLatencyBadge">138 ms</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Two Column Studio -->
+        <!-- 21st.dev Component: Interactive Spotlight Search Console -->
+        <div class="shine-border-emerald p-6 rounded-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-emerald-500/20 pb-3">
+                <div class="flex items-center space-x-2">
+                    <span class="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#00f5a0]"></span>
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-white font-mono">Dense Semantic Search Console</h2>
+                </div>
+                <span id="qaStatusBadge" class="text-[11px] font-mono px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-semibold">
+                    READY
+                </span>
+            </div>
+
+            <form id="qaForm" class="space-y-4">
+                <div class="relative">
+                    <input type="text" id="questionInput" placeholder="Inquire about GDPR Article 17, Delaware DGCL, HIPAA Technical Safeguards, or SOX 404..." class="w-full bg-emerald-950/90 border border-emerald-500/30 focus:border-emerald-400 rounded-xl px-4 py-3.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-400 font-sans shadow-inner pr-32">
+                    <button type="submit" id="submitQuestionBtn" class="absolute right-2 top-2 bottom-2 px-5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-emerald-950 font-extrabold text-xs rounded-lg transition-all active:scale-95 flex items-center space-x-1.5 shadow-[0_0_15px_rgba(0,245,160,0.4)]">
+                        <span>Query</span>
+                        <span>&rarr;</span>
+                    </button>
+                </div>
+
+                <!-- Quick Query Pills (21st.dev style) -->
+                <div class="flex flex-wrap items-center gap-2 font-mono text-xs text-slate-400">
+                    <span class="text-slate-500 text-[11px]">Benchmark Prompts:</span>
+                    <button type="button" onclick="setQuery('How does LegalLens classify digital financial fraud under IT Act 2000 and BNS 2023?')" class="px-2.5 py-1 rounded-full bg-emerald-950 border border-emerald-500/30 hover:border-emerald-400 text-emerald-300 hover:text-white transition text-[11px]">
+                        Cybercrime: IT Act & BNS
+                    </button>
+                    <button type="button" onclick="setQuery('What compensating transaction occurs in the Saga workflow when inventory depletion happens?')" class="px-2.5 py-1 rounded-full bg-emerald-950 border border-emerald-500/30 hover:border-emerald-400 text-emerald-300 hover:text-white transition text-[11px]">
+                        Saga: Compensating Rollback
+                    </button>
+                    <button type="button" onclick="setQuery('How does LegalLens handle statutory precedence between Code on Wages 2019 and legacy laws?')" class="px-2.5 py-1 rounded-full bg-emerald-950 border border-emerald-500/30 hover:border-emerald-400 text-emerald-300 hover:text-white transition text-[11px]">
+                        Labor Law: Code on Wages
+                    </button>
+                    <button type="button" onclick="setQuery('How does the Redis adapter scale WebSocket broadcasts across distributed server nodes?')" class="px-2.5 py-1 rounded-full bg-emerald-950 border border-emerald-500/30 hover:border-emerald-400 text-emerald-300 hover:text-white transition text-[11px]">
+                        Redis Pub/Sub Scaling
+                    </button>
+                </div>
+            </form>
+
+            <!-- Results Output: Visual Cosine Radar & Streaming Answer -->
+            <div id="qaResultContainer" class="space-y-4 pt-2">
+                <!-- Answer and citations will populate here -->
+            </div>
+        </div>
+
+        <!-- Two Column Studio: Knowledge Vault & Vector Chunks -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <!-- Left 5 cols: Corpus & Chunks -->
-            <div class="lg:col-span-5 space-y-6">
-                <!-- Indexed Documents -->
-                <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-5 space-y-4">
-                    <div class="flex items-center justify-between border-b border-zinc-800/60 pb-3">
-                        <h2 class="text-xs font-semibold text-white tracking-tight uppercase tracking-wider font-mono">Indexed Knowledge Corpus</h2>
-                        <button id="openUploadModalBtn" class="bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold px-2.5 py-1 rounded shadow transition font-mono">
+            <!-- Left 5 cols: Indexed Knowledge Corpus -->
+            <div class="lg:col-span-5 space-y-4">
+                <div class="bg-emerald-900/60 border border-emerald-500/25 rounded-2xl p-5 space-y-4 shadow-[0_10px_30px_-10px_rgba(0,245,160,0.1)]">
+                    <div class="flex items-center justify-between border-b border-emerald-500/20 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+                            <h2 class="text-sm font-bold uppercase tracking-wider text-white font-mono">Knowledge Vault</h2>
+                        </div>
+                        <button id="openUploadModalBtn" class="bg-emerald-500 hover:bg-emerald-400 text-emerald-950 text-xs font-bold px-3 py-1.5 rounded-lg shadow-[0_0_12px_rgba(0,245,160,0.3)] transition font-mono active:scale-95">
                             + Ingest Doc
                         </button>
                     </div>
-                    <div id="documentsList" class="space-y-2">
-                        <div class="text-zinc-600 text-center py-4 font-mono text-xs">Loading corpus...</div>
-                    </div>
-                </div>
 
-                <!-- Verified Test Prompts -->
-                <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-5 space-y-3 font-mono text-xs">
-                    <div class="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Verified Benchmark Queries</div>
-                    <div class="space-y-2">
-                        <button onclick="setQuery('What legal sections under Indian law apply to digital UPI fraud and impersonation?')" class="w-full text-left p-2.5 rounded bg-zinc-950/80 border border-zinc-800/80 hover:border-zinc-700 text-zinc-300 hover:text-white transition">
-                            &bull; &ldquo;What legal sections under Indian law apply to digital UPI fraud and impersonation?&rdquo;
-                        </button>
-                        <button onclick="setQuery('How does the Saga pattern guarantee idempotency across Kafka microservices?')" class="w-full text-left p-2.5 rounded bg-zinc-950/80 border border-zinc-800/80 hover:border-zinc-700 text-zinc-300 hover:text-white transition">
-                            &bull; &ldquo;How does the Saga pattern guarantee idempotency across Kafka microservices?&rdquo;
-                        </button>
-                        <button onclick="setQuery('How does the WebSocket adapter scale horizontally using Redis Pub/Sub?')" class="w-full text-left p-2.5 rounded bg-zinc-950/80 border border-zinc-800/80 hover:border-zinc-700 text-zinc-300 hover:text-white transition">
-                            &bull; &ldquo;How does the WebSocket adapter scale horizontally using Redis Pub/Sub?&rdquo;
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Chunk Inspector -->
-                <div class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-5 space-y-3 font-mono text-xs">
-                    <div class="flex items-center justify-between border-b border-zinc-800/60 pb-3">
-                        <span class="text-zinc-400 font-medium">Vector Store Chunks (D1)</span>
-                        <span id="chunkCountBadge" class="text-zinc-500 text-[10px]">0 Chunks</span>
-                    </div>
-                    <div id="chunksContainer" class="space-y-2 max-h-[220px] overflow-y-auto">
-                        <div class="text-center py-4 text-zinc-600">Loading chunks...</div>
+                    <div id="documentsList" class="space-y-2.5 max-h-72 overflow-y-auto pr-1">
+                        <!-- Documents populated dynamically -->
                     </div>
                 </div>
             </div>
 
-            <!-- Right 7 cols: Interactive Q&A Console -->
-            <div class="lg:col-span-7 bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 flex flex-col space-y-4">
-                <div class="flex items-center justify-between border-b border-zinc-800/60 pb-3 font-mono text-xs">
-                    <span class="font-semibold text-white">Grounded Inference Console</span>
-                    <span id="qaStatusBadge" class="text-[10px] px-2 py-0.5 rounded bg-zinc-800 text-zinc-400">READY</span>
-                </div>
-
-                <!-- Input Form -->
-                <form id="qaForm" class="space-y-3">
-                    <div class="relative">
-                        <textarea id="questionInput" rows="3" placeholder="Enter question to execute vector similarity retrieval and grounded synthesis..." class="w-full bg-zinc-950 border border-zinc-800/80 rounded-lg p-3 text-xs text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-zinc-600 resize-none font-sans"></textarea>
-                        <button type="submit" id="submitQuestionBtn" class="absolute bottom-3 right-3 bg-zinc-100 hover:bg-white text-zinc-950 font-semibold text-xs px-3.5 py-1.5 rounded shadow transition font-mono flex items-center space-x-1.5">
-                            <span>Execute Query</span>
-                            <kbd class="text-[9px] bg-zinc-300 text-zinc-900 px-1 rounded">↵</kbd>
-                        </button>
+            <!-- Right 7 cols: 384-d Vector Chunk Index -->
+            <div class="lg:col-span-7 space-y-4">
+                <div class="bg-emerald-900/60 border border-emerald-500/25 rounded-2xl p-5 space-y-4 shadow-[0_10px_30px_-10px_rgba(0,245,160,0.1)]">
+                    <div class="flex items-center justify-between border-b border-emerald-500/20 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+                            <h2 class="text-sm font-bold uppercase tracking-wider text-white font-mono">384-D Vector Embeddings Stream</h2>
+                        </div>
+                        <span id="chunkCountBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/30">
+                            Loading...
+                        </span>
                     </div>
-                </form>
 
-                <!-- Results Area -->
-                <div id="qaResultContainer" class="flex-1 space-y-4 overflow-y-auto min-h-[300px]">
-                    <div class="text-center py-24 text-zinc-600 font-mono text-xs">
-                        Select a verified prompt or submit a question to inspect the dense vector search and citation output.
+                    <div id="chunksContainer" class="space-y-2.5 max-h-72 overflow-y-auto pr-1 font-mono text-xs">
+                        <!-- Chunks populated dynamically -->
                     </div>
                 </div>
             </div>
         </div>
+
     </main>
 
-    <!-- Modal: Ingest Document -->
-    <div id="uploadModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden font-mono">
-        <div class="bg-zinc-900 border border-zinc-800 rounded-xl w-full max-w-md p-6 shadow-2xl space-y-4">
-            <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
-                <h3 class="font-semibold text-xs text-white uppercase tracking-wider">Ingest Corpus into Vector Store</h3>
-                <button id="closeUploadModalBtn" class="text-zinc-500 hover:text-white text-xs">&times;</button>
+    <!-- 21st.dev Modal: Document Ingestion -->
+    <div id="uploadModal" class="fixed inset-0 bg-black/60 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-emerald-900 border border-emerald-500/30 rounded-2xl p-6 max-w-lg w-full space-y-4 shadow-[0_20px_60px_-15px_rgba(0,245,160,0.4)]">
+            <div class="flex items-center justify-between border-b border-emerald-500/20 pb-3">
+                <div class="flex items-center space-x-2">
+                    <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+                    <h3 class="font-bold text-base text-white font-mono">Ingest Knowledge Corpus</h3>
+                </div>
+                <button id="closeUploadModalBtn" class="text-slate-400 hover:text-white font-mono text-lg">&times;</button>
             </div>
-            <form id="uploadDocForm" class="space-y-3 text-xs">
-                <div>
-                    <label class="block text-zinc-400 mb-1">Document Title</label>
-                    <input type="text" id="docTitleInput" required placeholder="e.g. Distributed Consensus Whitepaper" class="w-full bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-zinc-100 focus:outline-none focus:border-zinc-600 font-sans">
+
+            <form id="uploadForm" class="space-y-3.5 text-xs font-mono">
+                <div class="space-y-1">
+                    <label class="text-slate-300 font-semibold">Document Title:</label>
+                    <input type="text" id="docTitleInput" required placeholder="e.g. California Consumer Privacy Act (CCPA)" class="w-full bg-emerald-950 border border-emerald-500/30 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-emerald-400 font-sans">
                 </div>
-                <div>
-                    <label class="block text-zinc-400 mb-1">Document Content</label>
-                    <textarea id="docContentInput" rows="6" required placeholder="Paste plain text paragraphs here..." class="w-full bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-zinc-100 focus:outline-none focus:border-zinc-600 font-sans"></textarea>
+
+                <div class="space-y-1">
+                    <label class="text-slate-300 font-semibold">Classification / Tag:</label>
+                    <select id="docClassInput" class="w-full bg-emerald-950 border border-emerald-500/30 rounded-lg p-2 text-slate-200 focus:outline-none">
+                        <option value="STATUTORY_LAW">STATUTORY_LAW</option>
+                        <option value="REGULATORY_COMPLIANCE">REGULATORY_COMPLIANCE</option>
+                        <option value="ENGINEERING_SPEC">ENGINEERING_SPEC</option>
+                    </select>
                 </div>
-                <div class="pt-2 flex justify-end space-x-2">
-                    <button type="button" id="cancelUploadModalBtn" class="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded">Cancel</button>
-                    <button type="submit" class="px-4 py-1.5 bg-zinc-100 hover:bg-white text-zinc-950 font-semibold rounded shadow">Compute Embeddings & Index</button>
+
+                <div class="space-y-1">
+                    <label class="text-slate-300 font-semibold">Corpus Content (Automated sliding-window chunking):</label>
+                    <textarea id="docContentInput" required rows="6" placeholder="Paste legal statute, engineering spec, or architectural documentation..." class="w-full bg-emerald-950 border border-emerald-500/30 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-emerald-400 font-sans"></textarea>
+                </div>
+
+                <div class="pt-3 border-t border-emerald-500/20 flex items-center justify-end space-x-3">
+                    <button type="button" id="cancelUploadBtn" class="px-4 py-2 rounded-lg text-slate-400 hover:text-white transition">Cancel</button>
+                    <button type="submit" id="submitUploadBtn" class="px-5 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-emerald-950 font-bold transition shadow-[0_0_15px_rgba(0,245,160,0.5)]">
+                        Generate Embeddings &rarr;
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Minimalist Footer -->
-    <footer class="border-t border-zinc-800/80 bg-zinc-950 py-6 text-center text-xs text-zinc-500 font-mono">
-        <div>Shreeharsha N L &bull; AI Document Q&A (RAG) Platform &bull; pgvector / FastAPI / Workers AI</div>
+    <!-- Footer -->
+    <footer class="border-t border-emerald-500/20 bg-emerald-950/90 py-6 text-center text-xs font-mono text-slate-500">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div>Aura RAG Engine &bull; Built with BGE-Small, Llama 3.2 3B & Cloudflare D1</div>
+            <div class="text-emerald-400/80">Engineered by Shreeharsha N L &bull; shreeharsha.online</div>
+        </div>
     </footer>
 
     <script src="app.js"></script>
