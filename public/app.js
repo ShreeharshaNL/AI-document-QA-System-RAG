@@ -1,6 +1,68 @@
-// Veltro Document Intelligence Controller
+// OptimumSync Document Intelligence Controller
 let documents = [];
 
+const domainData = {
+    enterprise: {
+        title: "Enterprise Legal",
+        desc: "Robust statutory issue detection over IT Act 2000, Bharatiya Nyaya Sanhita (BNS) 2023, and Consumer Protection Act.",
+        query: "How does LegalLens classify digital financial fraud under IT Act 2000 and BNS 2023?",
+        caseStudy: "Statutory Fraud Detection Architecture"
+    },
+    finance: {
+        title: "Finance & FinTech",
+        desc: "Automated compliance verification under Sarbanes-Oxley (SOX) Section 404 and FinTech consumer protections.",
+        query: "What are the internal financial control requirements under SOX Section 404?",
+        caseStudy: "SOX 404 Auditing Framework"
+    },
+    distributed: {
+        title: "Distributed Systems",
+        desc: "Asynchronous microservices orchestration, Kafka Outbox patterns, and Saga compensating rollbacks.",
+        query: "What compensating transaction occurs in the Saga workflow when inventory depletion happens?",
+        caseStudy: "Kafka Saga Rollback Mechanics"
+    },
+    healthcare: {
+        title: "Healthcare (HIPAA)",
+        desc: "Technical safeguard specifications and encryption standards under HIPAA Security Rule 45 CFR 164.312.",
+        query: "What technical safeguards are mandated by HIPAA Security Rule 45 CFR 164.312?",
+        caseStudy: "ePHI Data Protection Controls"
+    }
+};
+
+window.switchDomain = function(domainKey) {
+    const data = domainData[domainKey];
+    if (!data) return;
+
+    ['enterprise', 'finance', 'distributed', 'healthcare'].forEach(key => {
+        const el = document.getElementById(`tab-${key}`);
+        if (key === domainKey) {
+            el.className = "accordion-hero-card p-6 cursor-pointer relative overflow-hidden transition-all duration-300";
+            el.innerHTML = `
+                <div class="flex items-start justify-between">
+                    <h3 class="text-xl font-bold text-white tracking-tight">${data.title}</h3>
+                    <div class="h-9 w-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                </div>
+                <p class="text-sm text-slate-300 mt-3 leading-relaxed font-normal">${data.desc}</p>
+                <div class="mt-4 pt-3 border-t border-white/20 text-xs font-bold tracking-wider uppercase text-blue-300 flex items-center space-x-1.5">
+                    <span>— CASE STUDIES: ${data.caseStudy}</span>
+                </div>
+            `;
+        } else {
+            el.className = "card-optimum p-5 cursor-pointer flex items-center justify-between hover:bg-slate-50 transition";
+            el.innerHTML = `
+                <span class="text-base font-bold text-[#0f172a]">${domainData[key].title}</span>
+                <div class="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </div>
+            `;
+        }
+    });
+
+    document.getElementById('questionInput').value = data.query;
+};
+
+// Fetch Dynamic Documents from Cloudflare D1
 async function fetchDocuments() {
     try {
         const res = await fetch('/api/documents');
@@ -10,50 +72,32 @@ async function fetchDocuments() {
             renderDocuments();
         }
     } catch (e) {
-        console.error("Failed to load documents:", e);
+        console.error("Failed to load documents from D1:", e);
     }
 }
 
 function renderDocuments() {
     const container = document.getElementById('documentsList');
     if (!documents.length) {
-        container.innerHTML = `<div class="text-center py-6 text-[#64748b] font-mono text-xs">No indexed documents found.</div>`;
+        container.innerHTML = `<div class="col-span-3 text-center py-8 text-slate-400 font-mono text-sm">No indexed corpus found in D1.</div>`;
         return;
     }
 
     container.innerHTML = documents.map(d => `
-        <div class="p-3.5 bg-[#ffffff] rounded-lg border border-[#e2e8f0] hover:border-[#cbd5e1] transition flex items-center justify-between text-xs font-mono shadow-sm">
-            <div class="space-y-0.5 truncate pr-2">
-                <div class="font-bold text-[#0f172a] truncate font-sans text-sm">${d.title}</div>
-                <div class="text-[11px] text-[#64748b]">${d.classification || 'SPEC'} &bull; ${(d.file_size / 1024).toFixed(1)} KB</div>
+        <div class="card-optimum p-6 space-y-3">
+            <div class="flex items-center justify-between text-xs font-mono text-slate-500">
+                <span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 font-semibold border border-blue-200">
+                    ${d.classification || 'CORPUS'}
+                </span>
+                <span>${(d.file_size / 1024).toFixed(1)} KB</span>
             </div>
-            <span class="badge-veltro shrink-0">
-                ${d.chunk_count} chunks
-            </span>
+            <h4 class="font-bold text-lg text-[#0f172a] leading-snug">${d.title}</h4>
+            <div class="text-xs text-slate-500 pt-2 border-t border-slate-100 flex justify-between font-mono">
+                <span>D1 Storage: Active</span>
+                <span class="font-bold text-slate-700">${d.chunk_count} Chunks</span>
+            </div>
         </div>
     `).join('');
-}
-
-async function fetchChunks() {
-    try {
-        const res = await fetch('/api/chunks');
-        const data = await res.json();
-        if (data.success) {
-            const container = document.getElementById('chunksContainer');
-            document.getElementById('chunkCountBadge').innerText = `${data.chunks.length} Chunks Indexed`;
-            container.innerHTML = data.chunks.map(c => `
-                <div class="p-3 bg-[#ffffff] rounded-lg border border-[#e2e8f0] text-[11px] space-y-1.5 shadow-sm">
-                    <div class="flex items-center justify-between text-[#64748b] font-mono text-[10px]">
-                        <span class="text-[#2563eb] font-bold">${c.id} (Page ${c.page_number})</span>
-                        <span class="px-1.5 py-0.5 rounded bg-[#f1f5f9] text-[#334155]">${c.token_count || 60} tokens</span>
-                    </div>
-                    <p class="text-[#334155] font-sans line-clamp-2 leading-relaxed">${c.content}</p>
-                </div>
-            `).join('');
-        }
-    } catch (e) {
-        console.error("Failed to fetch chunks:", e);
-    }
 }
 
 window.setQuery = function(text) {
@@ -61,6 +105,7 @@ window.setQuery = function(text) {
     document.getElementById('submitQuestionBtn').click();
 };
 
+// QA Query Submission
 document.getElementById('qaForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const input = document.getElementById('questionInput');
@@ -72,17 +117,17 @@ document.getElementById('qaForm').addEventListener('submit', async (e) => {
     const container = document.getElementById('qaResultContainer');
 
     btn.disabled = true;
-    badge.innerText = "QUERYING VECTOR MESH";
-    badge.className = "badge-veltro bg-blue-100 text-blue-800 animate-pulse";
+    badge.innerText = "QUERYING D1 VECTOR MESH...";
+    badge.className = "px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200 font-mono animate-pulse";
 
     container.innerHTML = `
-        <div class="p-5 bg-[#ffffff] rounded-xl border border-[#e2e8f0] space-y-2.5 font-mono text-xs text-[#334155] shadow-sm">
-            <div class="flex items-center space-x-2">
-                <span class="h-2 w-2 rounded-full bg-[#2563eb] animate-ping"></span>
-                <span class="text-[#2563eb] font-bold">1. Generating dense vector via @cf/baai/bge-small-en-v1.5...</span>
+        <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 font-mono text-sm text-slate-600">
+            <div class="flex items-center space-x-2 text-blue-600 font-bold">
+                <span class="h-2.5 w-2.5 rounded-full bg-blue-600 animate-ping"></span>
+                <span>1. Generating dense vector embedding via @cf/baai/bge-small-en-v1.5...</span>
             </div>
-            <div class="text-[#64748b] text-[11px] pl-4">&rarr; 2. Ranking candidate chunks with cosine distance (&lt;=&gt;) in Cloudflare D1...</div>
-            <div class="text-[#64748b] text-[11px] pl-4">&rarr; 3. Prompting Llama 3.2 3B Instruct with contextual excerpts...</div>
+            <div class="text-slate-500 pl-4">&rarr; 2. Computing cosine distance (<=>) over Cloudflare D1 document chunks...</div>
+            <div class="text-slate-500 pl-4">&rarr; 3. Prompting Llama 3.2 3B Instruct with top verified context...</div>
         </div>
     `;
 
@@ -96,54 +141,50 @@ document.getElementById('qaForm').addEventListener('submit', async (e) => {
 
         if (data.success) {
             const topSim = data.citations[0]?.similarityScore ? (data.citations[0].similarityScore * 100).toFixed(1) : "95.0";
-            badge.innerText = `GROUNDED (${topSim}%)`;
-            badge.className = "badge-veltro badge-emerald";
+            badge.innerText = `GROUNDED CITATION (${topSim}% MATCH)`;
+            badge.className = "px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 font-mono";
 
             const citationsHtml = data.citations.map((c, idx) => {
                 const score = (c.similarityScore * 100).toFixed(1);
                 return `
-                    <div class="p-3.5 bg-[#ffffff] rounded-lg border border-[#e2e8f0] text-xs space-y-2 font-mono shadow-sm">
-                        <div class="flex items-center justify-between text-[11px]">
-                            <span class="text-[#0f172a] font-bold">[Citation ${idx + 1}] ${c.documentTitle || c.documentId} &bull; Page ${c.pageNumber}</span>
-                            <span class="badge-veltro badge-emerald font-bold">
+                    <div class="p-4 bg-white rounded-xl border border-slate-200 text-sm space-y-2 shadow-sm">
+                        <div class="flex items-center justify-between text-xs font-mono">
+                            <span class="font-bold text-[#0f172a]">[Citation ${idx + 1}] ${c.documentTitle || c.documentId} &bull; Page ${c.pageNumber}</span>
+                            <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold border border-emerald-200">
                                 ${score}% Match
                             </span>
                         </div>
-
-                        <!-- Veltro Visual Similarity Meter -->
-                        <div class="w-full bg-[#f1f5f9] rounded-full h-1.5 overflow-hidden">
-                            <div class="bg-gradient-to-r from-[#2563eb] to-[#059669] h-1.5 rounded-full" style="width: ${score}%"></div>
+                        <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-gradient-to-r from-blue-600 to-emerald-500 h-1.5 rounded-full" style="width: ${score}%"></div>
                         </div>
-
-                        <p class="text-[#334155] text-xs font-sans leading-relaxed pt-1 border-t border-[#f1f5f9]">&ldquo;${c.content}&rdquo;</p>
+                        <p class="text-slate-600 text-xs leading-relaxed pt-1 border-t border-slate-100">&ldquo;${c.content}&rdquo;</p>
                     </div>
                 `;
             }).join('');
 
             container.innerHTML = `
-                <!-- Question -->
-                <div class="p-4 bg-[#f8fafc] rounded-xl border border-[#e2e8f0] text-xs font-mono">
-                    <div class="text-[10px] text-[#64748b] uppercase tracking-wider mb-1">Inquiry Formulation</div>
-                    <div class="text-[#0f172a] font-sans text-sm font-semibold">${data.question}</div>
+                <!-- Inquiry Formulation -->
+                <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-1">
+                    <div class="text-xs font-bold text-slate-400 uppercase tracking-widest font-mono">Inquiry</div>
+                    <div class="text-base font-semibold text-[#0f172a]">${data.question}</div>
                 </div>
 
-                <!-- LLM Synthesis -->
-                <div class="card-veltro p-5 space-y-3 shadow-sm border border-[#e2e8f0]">
-                    <div class="flex items-center justify-between font-mono text-[11px] text-[#64748b] border-b border-[#f1f5f9] pb-2.5">
-                        <span class="text-[#2563eb] font-bold flex items-center">
-                            <span class="h-2 w-2 rounded-full bg-[#2563eb] mr-2"></span>
-                            Grounded Synthesis (Llama 3.2 3B Instruct)
+                <!-- Grounded Answer Card -->
+                <div class="card-optimum p-6 sm:p-8 space-y-4 border border-blue-100 shadow-md">
+                    <div class="flex items-center justify-between text-xs font-mono text-slate-400 border-b border-slate-100 pb-3">
+                        <span class="text-blue-600 font-bold flex items-center space-x-1.5">
+                            <span class="h-2 w-2 rounded-full bg-blue-600"></span>
+                            <span>Grounded Synthesis &bull; Llama 3.2 3B Instruct</span>
                         </span>
-                        <span>Latency: <strong class="text-[#059669]">${data.latencyMs}ms</strong></span>
+                        <span>Latency: <strong class="text-emerald-600 font-bold">${data.latencyMs}ms</strong></span>
                     </div>
-                    <div id="streamingAnswerText" class="text-[#334155] leading-relaxed font-sans text-sm"></div>
+                    <div id="streamingAnswerText" class="text-lg text-slate-800 leading-relaxed font-normal"></div>
                 </div>
 
-                <!-- Ranked Citations -->
-                <div class="space-y-2.5 pt-2">
-                    <div class="text-xs font-mono uppercase tracking-wider text-[#0f172a] font-bold flex items-center justify-between">
-                        <span>Auditable Source Citations (Dense Cosine Similarity)</span>
-                        <span class="text-[#2563eb]">${data.citations.length} Ranked Chunks</span>
+                <!-- Citations -->
+                <div class="space-y-3 pt-2">
+                    <div class="text-xs font-bold uppercase tracking-wider text-slate-400 font-mono">
+                        Auditable Source Citations (Dense Cosine Similarity)
                     </div>
                     ${citationsHtml}
                 </div>
@@ -153,11 +194,11 @@ document.getElementById('qaForm').addEventListener('submit', async (e) => {
 
         } else {
             badge.innerText = "QUERY ERROR";
-            badge.className = "badge-veltro bg-red-100 text-red-800";
-            container.innerHTML = `<div class="p-4 bg-white border border-red-300 text-red-700 text-xs rounded-xl font-mono">${data.answer || data.error}</div>`;
+            badge.className = "px-3 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-800 border border-red-200 font-mono";
+            container.innerHTML = `<div class="p-6 bg-red-50 text-red-700 rounded-2xl font-mono text-sm border border-red-200">${data.answer || data.error}</div>`;
         }
     } catch (err) {
-        container.innerHTML = `<div class="p-4 bg-white border border-red-300 text-red-700 text-xs rounded-xl font-mono">Error: ${err.message}</div>`;
+        container.innerHTML = `<div class="p-6 bg-red-50 text-red-700 rounded-2xl font-mono text-sm border border-red-200">Error: ${err.message}</div>`;
     } finally {
         btn.disabled = false;
     }
@@ -177,7 +218,7 @@ function streamTypewriter(text, element) {
     type();
 }
 
-// Ingestion Modal
+// Ingest Modal Handling
 const uploadModal = document.getElementById('uploadModal');
 document.getElementById('openUploadModalBtn').onclick = () => uploadModal.classList.remove('hidden');
 document.getElementById('closeUploadModalBtn').onclick = () => uploadModal.classList.add('hidden');
@@ -193,7 +234,7 @@ document.getElementById('uploadForm').addEventListener('submit', async (e) => {
     if (!title || !content) return;
 
     submitBtn.disabled = true;
-    submitBtn.innerText = "Generating Embeddings...";
+    submitBtn.innerText = "Generating 384-D Embeddings...";
 
     try {
         const res = await fetch('/api/documents/upload', {
@@ -205,17 +246,16 @@ document.getElementById('uploadForm').addEventListener('submit', async (e) => {
         if (data.success) {
             uploadModal.classList.add('hidden');
             document.getElementById('uploadForm').reset();
-            await Promise.all([fetchDocuments(), fetchChunks()]);
+            await fetchDocuments();
         }
     } catch (err) {
-        console.error("Upload failed:", err);
+        console.error("Upload error:", err);
     } finally {
         submitBtn.disabled = false;
-        submitBtn.innerText = "Generate Embeddings \u2192";
+        submitBtn.innerText = "Generate 384-D Embeddings \u2192";
     }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchDocuments();
-    fetchChunks();
 });

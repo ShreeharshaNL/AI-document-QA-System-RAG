@@ -1,80 +1,87 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-    --veltro-bg: #f8fafc;
-    --veltro-card: #ffffff;
-    --veltro-text-dark: #0f172a;
-    --veltro-text-body: #334155;
-    --veltro-text-muted: #64748b;
-    --veltro-border: #e2e8f0;
-    --veltro-border-strong: #cbd5e1;
-    --veltro-primary: #2563eb;
-    --veltro-primary-hover: #1d4ed8;
-    --veltro-primary-soft: #eff6ff;
-    --veltro-emerald: #059669;
-    --veltro-emerald-soft: #ecfdf5;
+    --lime-strip: #c4f82a;
+    --text-dark: #0f172a;
+    --text-body: #334155;
+    --text-muted: #64748b;
+    --border-light: #e2e8f0;
+    --primary-blue: #2563eb;
 }
 
 body {
-    background-color: var(--veltro-bg);
-    color: var(--veltro-text-dark);
+    background-color: #f8fafc;
+    color: var(--text-dark);
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
+}
+
+.font-serif-italic {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
 }
 
 .font-mono {
     font-family: 'JetBrains Mono', monospace;
 }
 
-/* Veltro Cards */
-.card-veltro {
-    background-color: var(--veltro-card);
-    border: 1px solid var(--veltro-border);
-    border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
-    transition: all 0.2s ease;
+/* OptimumSync Card */
+.card-optimum {
+    background: #ffffff;
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.card-veltro:hover {
-    border-color: var(--veltro-border-strong);
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+.card-optimum:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
-/* Veltro Buttons */
-.btn-veltro-primary {
-    background-color: var(--veltro-primary);
+/* Accordion Card Active State */
+.accordion-hero-card {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.92)),
+                url('hero-bg.jpg') center/cover;
     color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.3);
+}
+
+/* OptimumSync Buttons */
+.btn-optimum-dark {
+    background-color: #0f172a;
+    color: #ffffff;
+    border-radius: 9999px;
     font-weight: 600;
-    border-radius: 8px;
-    padding: 9px 18px;
+    padding: 10px 22px;
     transition: all 0.15s ease;
-    box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
 }
-.btn-veltro-primary:hover {
-    background-color: var(--veltro-primary-hover);
+.btn-optimum-dark:hover {
+    background-color: #1e293b;
+    transform: translateY(-1px);
 }
-.btn-veltro-primary:active {
+.btn-optimum-dark:active {
     transform: scale(0.98);
 }
 
-/* Veltro Tags & Badges */
-.badge-veltro {
-    font-size: 11px;
+.btn-optimum-blue {
+    background-color: var(--primary-blue);
+    color: #ffffff;
+    border-radius: 12px;
     font-weight: 600;
-    padding: 3px 9px;
-    border-radius: 6px;
-    background-color: var(--veltro-primary-soft);
-    color: var(--veltro-primary);
-    border: 1px solid rgba(37, 99, 235, 0.2);
+    padding: 12px 24px;
+    transition: all 0.15s ease;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+.btn-optimum-blue:hover {
+    background-color: #1d4ed8;
+}
+.btn-optimum-blue:active {
+    transform: scale(0.98);
 }
 
-.badge-emerald {
-    background-color: var(--veltro-emerald-soft);
-    color: var(--veltro-emerald);
-    border: 1px solid rgba(5, 150, 105, 0.2);
-}
-
-/* Custom Scrollbars */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
